@@ -1,46 +1,92 @@
 import './App.css';
+import Component2 from './Component2';
+import Navbar from './components/Navbar.js';
+import Data from './components/3_compo';
+import About from './components/4_compo'
+import React, { useState } from 'react'
+import Hello from './components/5_alert'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom'
+
 
 function App() {
+
+  const toggle = (e) => {
+    if (color === 'dark') {
+      setcolor('light');
+      document.body.style.backgroundColor = 'white'
+      show('your light theme hasbeen changed', 'success')
+      setFont('black')
+
+    } else {
+      setcolor('dark')
+      document.body.style.backgroundColor = '#1d296d'
+      show('the dark theme hasbeen changed', 'success')
+      setFont('white')
+    }
+  }
+
+
+  const [alert, setAlert] = useState(null)
+  const show = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type
+    })
+    setTimeout(() => {
+      show(null)
+    }, 3000);
+  }
+  const ourTarget1 = (e) => {
+    document.body.style.backgroundColor = 'red'
+
+  }
+  const ourTarget2 = (e) => {
+    document.body.style.backgroundColor = 'yellow'
+
+  }
+  const ourTarget3 = (e) => {
+    document.body.style.backgroundColor = 'green'
+
+  }
+  const [color, setcolor] = useState('light');
+  const [font, setFont] = useState('black');
+
   return (
-<>
-<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div className="container-fluid">
-    <a className="navbar-brand" href="/" contentEditable='true'>PostMan</a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarScroll">
-      <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style={{"--bs-scroll-height": "100px"}}>
-        <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/">Link</a>
-        </li>
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="/" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Link
-          </a>
-          <ul className="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-            <li><a className="dropdown-item" href="/">Action</a></li>
-            <li><a className="dropdown-item" href="/">Another action</a></li>
-          </ul>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link disabled" href="/" tabindex="-1" aria-disabled="true">Link</a>
-        </li>
-      </ul>
-      <form className="d-flex">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">Search</button>
-        <button className="btn btn-outline btn-primary" type="submit" style={{color:'white'}}>Submit</button>
-      </form>
-    </div>
-  </div>
-</nav>
+    <>
+    
+      <Router>
+        
+      <Navbar fontColor={font} value1={ourTarget1} value2={ourTarget2} value3={ourTarget3} send={color} mode={color === 'dark' ? 'light' : 'dark'} title="Home" toggleMode={toggle} />
+      <Hello alert={alert} />
+      <Component2 />
 
-</>
-        );
+
+        <Switch>
+          <Route exact path='/form'>
+
+            <div id='black' className="container">
+              <Data bhejna={show} className="btn btn-primary mx-2 my-2" send={color} data="hello guys" />
+            </div>
+
+          </Route>
+
+          <Route exact path='/about'>
+            <About />
+          </Route>
+
+        </Switch>
+
+       
+     
+
+
+      </Router>
+    </>
+
+  );
 }
-
-        export default App;
+export default App;
